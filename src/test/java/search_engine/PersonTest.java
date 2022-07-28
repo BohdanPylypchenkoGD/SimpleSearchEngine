@@ -94,11 +94,10 @@ public class PersonTest {
     @Test
     void parsePersonEmailAsLastName() {
         // Calling parse
-        Person result = Person.parsePerson("Anakin askywalker@protonmail.com");
+        Person result = Person.parsePerson("Ana-kin askywalker@protonmail.com");
 
         // Asserting
-        assertEquals(result.getFirstName(), "Anakin");
-        assertEquals(result.getLastName(), "askywalker");
+        assertEquals(result.getFirstName(), "Ana-kin");
         assertEquals(result.getEmail(), "askywalker@protonmail.com");
     }
 }

@@ -18,10 +18,10 @@ public class Person {
     private final String email;
 
     // First last name pattern
-    private static final Pattern NAME = Pattern.compile("\\w+");
+    private static final Pattern NAME = Pattern.compile("[-a-zA-Z_0-9]+");
 
     // Email pattern
-    private static final Pattern EMAIL = Pattern.compile("\\w+@\\w+\\.com");
+    private static final Pattern EMAIL = Pattern.compile("[-a-zA-Z_0-9]+@[-a-zA-Z_0-9]+\\.com");
 
     /**
      * Default constructor

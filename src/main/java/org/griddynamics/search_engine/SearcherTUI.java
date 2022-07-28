@@ -1,5 +1,9 @@
 package org.griddynamics.search_engine;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -13,9 +17,9 @@ public class SearcherTUI {
     /**
      * Program menu
      */
-    public static void menu() {
+    public static void menu(File data) {
         // Getting people
-        Person[] people = getPeopleFromUser();
+        Person[] people = readPeopleFromFile(data);
 
         // Menu cycle
         String userDecision;
@@ -44,6 +48,33 @@ public class SearcherTUI {
                     System.out.println("\nIncorrect option! Try again.");
             }
         }
+    }
+
+    /**
+     * Reads people from given file
+     * @param data | File instance to read from
+     * @return Array of Person, loaded from file
+     */
+    private static Person[] readPeopleFromFile(File data) {
+        // Linked list to store people
+        List<Person> people = new LinkedList<>();
+
+        // Scanner to read from file
+        Scanner dataScan;
+        try {
+            dataScan = new Scanner(data);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Reading
+        while(dataScan.hasNextLine()) {
+            // Adding to list
+            people.add(Person.parsePerson(dataScan.nextLine()));
+        }
+
+        // Returning
+        return people.toArray(Person[]::new);
     }
 
     /**
