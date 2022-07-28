@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -21,6 +22,9 @@ public class SearcherTUI {
         // Getting people
         Person[] people = readPeopleFromFile(data);
 
+        // Getting string -> Person[] map
+        Map<String, Person[]> map = Searcher.createStringToPersonArrayMap(people);
+
         // Menu cycle
         String userDecision;
         while(true) {
@@ -36,7 +40,7 @@ public class SearcherTUI {
             // Switching
             switch (userDecision) {
                 case "1":
-                    searchByKeyword(people);
+                    searchByKeyword(map);
                     break;
                 case "2":
                     printPeople(people);
@@ -91,7 +95,7 @@ public class SearcherTUI {
     /**
      * TUI for searchByKeyword method
      */
-    private static void searchByKeyword(Person[] people) {
+    private static void searchByKeyword(Map<String, Person[]> map) {
         // Asking to enter a keyword
         System.out.println("\nEnter a name or email to search all suitable people.");
 
@@ -99,12 +103,13 @@ public class SearcherTUI {
         String keyword = scanIn.nextLine();
 
         // Processing query
-        Person[] result = Searcher.searchByKeyword(people, keyword);
+        Person[] result = Searcher.searchByKeyword(map, keyword);
 
         // Printing result
-        if (result.length == 0) {
+        if (result == null) {
             System.out.println("No matching people found.");
         } else {
+            System.out.printf("%d persons found:\n", result.length);
             for (Person current : result) {
                 System.out.println(current);
             }

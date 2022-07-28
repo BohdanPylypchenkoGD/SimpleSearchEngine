@@ -5,16 +5,18 @@ import org.griddynamics.search_engine.Searcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Searcher class tests
  */
 public class SearcherTest {
 
-    // People array
-    private Person[] people;
+    // str -> Person[] map
+    private Map<String, Person[]> peopleMap;
 
     /**
      * Initializes people array
@@ -22,7 +24,7 @@ public class SearcherTest {
     @BeforeEach
     private void initializePeople() {
         // Initializing array
-        people = new Person[6];
+        Person[] people = new Person[6];
 
         // Initializing instances
         people[0] = new Person("Dwight", "Joseph", "djo@gmail.com");
@@ -31,12 +33,15 @@ public class SearcherTest {
         people[3] = new Person("Erick", "Harrington", "harrington@gmail.com");
         people[4] = new Person("Myrtle", "Medina", "");
         people[5] = new Person("Erick", "Burgess", "");
+
+        // Creating map based on people
+        peopleMap = Searcher.createStringToPersonArrayMap(people);
     }
 
     @Test
     void erickTest() {
         // Searching by keyword
-        Person[] result = Searcher.searchByKeyword(people, "Erick");
+        Person[] result = Searcher.searchByKeyword(peopleMap, "Erick");
 
         // Asserting
         assertEquals(2, result.length);
@@ -47,31 +52,19 @@ public class SearcherTest {
     @Test
     void noMatchTest() {
         // Searching by keyword
-        Person[] result = Searcher.searchByKeyword(people, "there is no me in there");
+        Person[] result = Searcher.searchByKeyword(peopleMap, "there is no me in there");
 
         // Asserting
-        assertEquals(result.length, 0);
+        assertNull(result);
     }
 
     @Test
     void webbTest() {
         // Searching by keyword
-        Person[] result = Searcher.searchByKeyword(people, "webb@gmail.com");
+        Person[] result = Searcher.searchByKeyword(peopleMap, "webb@gmail.com");
 
         // Asserting
         assertEquals(1, result.length);
         assertEquals((new Person("Rene", "Webb", "webb@gmail.com")), result[0]);
-    }
-
-    @Test
-    void emailSignTest() {
-        // Searching by keyword
-        Person[] result = Searcher.searchByKeyword(people, "@");
-
-        // Asserting
-        assertEquals(3, result.length);
-        assertEquals((new Person("Dwight", "Joseph", "djo@gmail.com")), result[0]);
-        assertEquals((new Person("Rene", "Webb", "webb@gmail.com")), result[1]);
-        assertEquals((new Person("Erick", "Harrington", "harrington@gmail.com")), result[2]);
     }
 }
